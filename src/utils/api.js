@@ -1,4 +1,4 @@
-const API = "http://lifestealer86.ru/api-shop";
+const API = "http://lifestealer86.ru/api-shop"
 
 export const loginRequest = (user) => {
     return new Promise((resolve, reject) => {
@@ -9,19 +9,26 @@ export const loginRequest = (user) => {
             },
             body: JSON.stringify(user),
         })
-            .then((response) => response.json())
+            .then((response) => {
+                if (!response.ok) {
+                    return response.json().then((errorData) => {
+                        reject(errorData.error || { message: "Login failed" })
+                    })
+                }
+                return response.json()
+            })
             .then((result) => {
                 if (result.data && result.data.user_token) {
-                    resolve(result.data.user_token);
+                    resolve(result.data.user_token)
                 } else {
-                    reject(result.error || { message: "Invalid response from server" });
+                    reject({ message: "Invalid response" })
                 }
             })
             .catch((error) => {
-                reject(error);
-            });
-    });
-};
+                reject(error)
+            })
+    })
+}
 
 export const registerRequest = (user) => {
     return new Promise((resolve, reject) => {
@@ -32,55 +39,36 @@ export const registerRequest = (user) => {
             },
             body: JSON.stringify(user),
         })
-            .then((response) => response.json())
+            .then((response) => {
+                if (!response.ok) {
+                    return response.json().then((errorData) => {
+                        reject(errorData.error || { message: "Registration failed" })
+                    })
+                }
+                return response.json()
+            })
             .then((result) => {
                 if (result.data && result.data.user_token) {
-                    resolve(result.data.user_token);
+                    resolve(result.data.user_token)
                 } else {
-                    reject(result.error || { message: "Invalid response from server" });
+                    reject({ message: "Invalid response" })
                 }
             })
             .catch((error) => {
-                reject(error);
-            });
-    });
-};
-
-export const getProducts = () => {
-    return new Promise((resolve, reject) => {
-        fetch(`${API}/products`)
-            .then((response) => response.json())
-            .then((result) => {
-                if (result.data) {
-                    resolve(result.data);
-                } else {
-                    reject(result.error || { message: "Invalid response" });
-                }
+                reject(error)
             })
-            .catch((error) => reject(error));
-    });
-};
+    })
+}
 
-export const addToCartRequest = (productId, token) => {
-    return new Promise((resolve, reject) => {
-        fetch(`${API}/cart/${productId}`, {
-            method: "POST",
+export const logoutRequest = () => {
+    return new Promise((resolve) => {
+        const token = localStorage.getItem("myAppToken")
+        fetch(`${API}/logout`, {
             headers: {
-                "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             }
         })
-            .then((response) => response.json())
-            .then((result) => resolve(result))
-            .catch((error) => reject(error));
-    });
-};
-
-export const logoutRequest = () => {
-    return new Promise((resolve, reject) => {
-        fetch(`${API}/logout`)
-            .then((response) => response.json())
-            .then((result) => resolve(result))
-            .catch((error) => reject(error));
-    });
-};
+            .then(() => resolve())
+            .catch(() => resolve())
+    })
+}

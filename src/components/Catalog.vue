@@ -37,10 +37,8 @@
         <button
             v-if="isAuthenticated"
             @click="addToCart(product.id)"
-            :disabled="addingToCart === product.id"
-            class="btn-add"
-        >
-          {{ addingToCart === product.id ? 'Добавляем...' : 'В корзину' }}
+            class="btn-add">
+          В корзину
         </button>
       </div>
     </div>
@@ -56,7 +54,6 @@ export default {
       products: [],
       loading: false,
       error: "",
-      addingToCart: null,
       cartCount: 0
     };
   },
@@ -130,8 +127,6 @@ export default {
     },
 
     async addToCart(productId) {
-      this.addingToCart = productId;
-
       try {
         const API = "http://lifestealer86.ru/api-shop";
         const token = localStorage.getItem("myAppToken");
@@ -153,8 +148,6 @@ export default {
         }
       } catch (err) {
         console.error("Add to cart error:", err);
-      } finally {
-        this.addingToCart = null;
       }
     },
 
@@ -238,8 +231,7 @@ export default {
 }
 
 .cart-badge {
-  background: #FB8159;
-  color: #FEFEFE;
+  color: #000000;
   font-size: 12px;
   font-weight: 700;
   padding: 2px 8px;
