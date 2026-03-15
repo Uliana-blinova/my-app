@@ -1,55 +1,37 @@
-import { createStore } from 'vuex'
-import { api } from '@/utils/api'
+import { createStore } from "vuex";
+import { loginRequest } from "@/utils/api.js";
 
 export default createStore({
   state: {
-    token: localStorage.getItem('user_token') || null
+    token: localStorage.getItem("myAppToken") || "",
   },
-
   getters: {
-    isAuthenticated: state => !!state.token
+    isAuthenticated: (state) => !!state.token,
   },
-
-  mutations: {
-    SET_TOKEN(state, token) {
-      state.token = token;
-      localStorage.setItem('user_token', token);
-    },
-    CLEAR_TOKEN(state) {
-      state.token = null;
-      localStorage.removeItem('user_token');
-    }
-  },
-
   actions: {
-    async login({ commit }, { email, password }) {
-      try {
-        const response = await api.login(email, password);
-        commit('SET_TOKEN', response.data.user_token);
-        return { success: true };
-      } catch (error) {
-        return { success: false, error: error.message || 'Ошибка входа' };
-      }
+    AUTH_REQUEST: ({ commit }, user) => {
+      return new Promise((resolve, reject) => {
+        loginRequest(user)
+            .then((token) => {
+              commit("AUTH_SUCCESS", token);
+              localStorage.setItem("myAppToken", token);
+              resolve();
+            })
+            .catch(() => {
+              commit("AUTH_ERROR");
+              localStorage.removeItem("myAppToken");
+              reject();
+            });
+      });
     },
-
-    async register({ commit }, { fio, email, password }) {
-      try {
-        const response = await api.register(fio, email, password);
-        commit('SET_TOKEN', response.data.user_token);
-        return { success: true };
-      } catch (error) {
-        return { success: false, error: error.message || 'Ошибка регистрации' };
-      }
-    },
-
-    async logout({ commit }) {
-      try {
-        await api.logout();
-      } finally {
-        commit('CLEAR_TOKEN');
-      }
-    }
   },
-
-  modules: {}
-})
+  mutations: {
+    AUTH_SUCCESS: (state, token) => {
+      state.token = token;
+    },
+    AUTH_ERROR: (state) => {
+      state.token = "";
+    },
+  },
+  modules: {},
+});

@@ -20,25 +20,34 @@ const requireGuest = (to, from, next) => {
 const routes = [
   {
     path: '/',
-    name: 'Catalog',
-    component: () => import('@/views/CatalogView.vue')
+    name: 'home',
+    component: function () {
+      import('../views/HomeView.vue');
+    },
+    beforeEnter: ifAuthenticated,
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/LoginView.vue'),
+    component: function(){
+      import('../components/LoginView.vue')
+    },
     beforeEnter: requireGuest
   },
   {
     path: '/register',
     name: 'Register',
-    component: () => import('@/views/RegisterView.vue'),
+    component: function (){
+      import('../components/RegisterView.vue')
+    },
     beforeEnter: requireGuest
   },
   {
     path: '/cart',
     name: 'Cart',
-    component: () => import('@/views/CartView.vue'),
+    component: function (){
+      import('@/views/CartView.vue')
+    },
     beforeEnter: requireAuth
   }
 ]
