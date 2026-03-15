@@ -5,24 +5,45 @@
 </template>
 
 <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #F2E8DF;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  min-height: 100vh;
+  background: #f8e0c8;
+  padding: 20px;
 }
 
-nav {
-  padding: 30px;
+a {
+  color: #415111;
+  text-decoration: none;
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+a:hover {
+  color: #FB8159;
+}
+.btn-primary {
+  background: #FB8159;
+  color: #FEFEFE;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
+.card {
+  background: #FEFEFE;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(65, 81, 17, 0.1);
+  border: 2px solid #D2E186;
 }
 </style>
