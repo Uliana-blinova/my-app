@@ -1,4 +1,4 @@
-const API = process.env.VUE_APP_API || "http://lifestealer86.ru/api-shop";
+const API = "http://lifestealer86.ru/api-shop";
 
 export const loginRequest = (user) => {
     return new Promise((resolve, reject) => {
@@ -10,12 +10,19 @@ export const loginRequest = (user) => {
             body: JSON.stringify(user),
         })
             .then((response) => response.json())
-            .then((result) => resolve(result.data.user_token))
+            .then((result) => {
+                if (result.data && result.data.user_token) {
+                    resolve(result.data.user_token);
+                } else {
+                    reject(result.error || { message: "Invalid response from server" });
+                }
+            })
             .catch((error) => {
                 reject(error);
             });
     });
 };
+
 export const registerRequest = (user) => {
     return new Promise((resolve, reject) => {
         fetch(`${API}/signup`, {
@@ -25,24 +32,55 @@ export const registerRequest = (user) => {
             },
             body: JSON.stringify(user),
         })
-            .then((response) => {
-                if (!response.ok) {
-                    // Если ошибка сервера — выбрасываем её
-                    return response.json().then((errorData) => {
-                        reject(errorData.error || { message: "Registration failed" });
-                    });
-                }
-                return response.json();
-            })
+            .then((response) => response.json())
             .then((result) => {
                 if (result.data && result.data.user_token) {
                     resolve(result.data.user_token);
                 } else {
-                    reject({ message: "Invalid response from server" });
+                    reject(result.error || { message: "Invalid response from server" });
                 }
             })
             .catch((error) => {
                 reject(error);
             });
+    });
+};
+
+export const getProducts = () => {
+    return new Promise((resolve, reject) => {
+        fetch(`${API}/products`)
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.data) {
+                    resolve(result.data);
+                } else {
+                    reject(result.error || { message: "Invalid response" });
+                }
+            })
+            .catch((error) => reject(error));
+    });
+};
+
+export const addToCartRequest = (productId, token) => {
+    return new Promise((resolve, reject) => {
+        fetch(`${API}/cart/${productId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        })
+            .then((response) => response.json())
+            .then((result) => resolve(result))
+            .catch((error) => reject(error));
+    });
+};
+
+export const logoutRequest = () => {
+    return new Promise((resolve, reject) => {
+        fetch(`${API}/logout`)
+            .then((response) => response.json())
+            .then((result) => resolve(result))
+            .catch((error) => reject(error));
     });
 };

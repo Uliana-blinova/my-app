@@ -91,7 +91,6 @@ export default {
 .register button[type="submit"] {
   background:#FCBF93;
   color: #FEFEFE;
-  box-shadow: 0 4px 16px rgba(251, 129, 89, 0.3);
 }
 
 .register button[type="button"] {

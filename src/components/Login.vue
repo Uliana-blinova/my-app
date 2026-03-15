@@ -39,7 +39,6 @@ export default {
   padding: 40px;
   background: #FEFEFE;
   border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(65, 81, 17, 0.15);
   border: 2px solid #F2E8DF;
 }
 
@@ -84,5 +83,4 @@ export default {
   font-size: 16px;
   font-weight: 600;
 }
-
 </style>
