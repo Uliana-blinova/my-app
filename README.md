@@ -1,19 +1,23 @@
-# my-app
+Установка и запуск
 
-## Project setup
+1.Клонирование проекта
+
+```
+  git clone https://github.com/Uliana-blinova/praktika_klient_server_3.0.git
+  cd praktika_klient_server_3.0
+```
+
+2.Установка зависимостей
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
+3. Сборка проекта
 ```
 npm run build
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+4. Запуск в режиме разработки
+```
+npm run serve
+```
+После запуска откройте браузер по адресу: http://localhost:8080
