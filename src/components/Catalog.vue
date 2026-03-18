@@ -16,11 +16,8 @@
       </div>
     </header>
     <h1>Каталог товаров</h1>
-    <div v-if="loading" class="loading">Загрузка товаров...</div>
 
-    <div v-else-if="error" class="error">{{ error }}</div>
-
-    <div v-else class="products-grid">
+    <div class="products-grid">
       <div v-for="product in products" :key="product.id" class="product-card">
         <img
             v-if="product.image"
@@ -52,7 +49,6 @@ export default {
   data() {
     return {
       products: [],
-      loading: false,
       error: "",
       cartCount: 0
     };
@@ -105,9 +101,6 @@ export default {
     },
 
     async fetchProducts() {
-      this.loading = true;
-      this.error = "";
-
       try {
         const API = "http://lifestealer86.ru/api-shop";
         const response = await fetch(`${API}/products`);
@@ -115,14 +108,9 @@ export default {
 
         if (response.ok) {
           this.products = result.data || [];
-        } else {
-          this.error = result.error?.message || "Ошибка загрузки товаров";
         }
       } catch (err) {
-        this.error = "Не удалось подключиться к серверу";
         console.error("Fetch error:", err);
-      } finally {
-        this.loading = false;
       }
     },
 
@@ -165,6 +153,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 .catalog {
@@ -310,5 +299,9 @@ export default {
   font-weight: 600;
   font-size: 15px;
   margin-top: auto;
+}
+
+.btn-add:hover {
+  background: #FB8159;
 }
 </style>
