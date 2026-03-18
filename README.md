@@ -3,8 +3,8 @@
 1.Клонирование проекта
 
 ```
-  git clone https://github.com/Uliana-blinova/praktika_klient_server_3.0.git
-  cd praktika_klient_server_3.0
+  git clone https://github.com/Uliana-blinova/my-app.git
+  cd my-app
 ```
 
 2.Установка зависимостей
